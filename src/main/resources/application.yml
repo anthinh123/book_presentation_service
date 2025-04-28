@@ -1,0 +1,6 @@
+server:
+  port: 8383
+
+spring:
+  application:
+    name: book_presentation_service
