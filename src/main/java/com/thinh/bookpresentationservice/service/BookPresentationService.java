@@ -1,11 +1,16 @@
 package com.thinh.bookpresentationservice.service;
 
 import com.thinh.bookpresentationservice.api.BookResponse;
+import com.thinh.bookpresentationservice.common.ApiResponse;
 import com.thinh.bookpresentationservice.common.Paging;
 import com.thinh.bookpresentationservice.mapper.BookResponseMapper;
 import com.thinh.bookpresentationservice.repository.BookPresentationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -31,5 +36,10 @@ public class BookPresentationService {
                     bookPage.getTotalPages()
             );
         });
+    }
+
+    public Mono<BookResponse> getBookDetail(Long bookId) {
+        return bookPresentationRepository.getBookDetail(bookId)
+                .map(BookResponseMapper::fromBook);
     }
 }

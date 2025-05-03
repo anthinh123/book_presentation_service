@@ -6,6 +6,7 @@ import com.thinh.bookpresentationservice.model.Book;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -46,6 +47,30 @@ public class BookPresentationRepository {
                     }
                 })
                 .log("response-from-book-catalog-service");
+    }
+
+    public Mono<Book> getBookDetail(long bookId) {
+        ParameterizedTypeReference<ApiResponse<Book>> responseType =
+                new ParameterizedTypeReference<>() {
+                };
+
+        return webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path(bookCatalogPath + "/" + bookId)
+                        .build())
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(responseType)
+                .flatMap(apiResponse -> {
+                    if (apiResponse.getCode() == HttpStatus.OK.value() && apiResponse.getData() != null) {
+                        return Mono.just(apiResponse.getData());
+                    } else {
+                        String errorMessage = apiResponse.getMessage() != null ? apiResponse.getMessage() : "Catalog service (getBookDetail " + bookId + ") returned non-OK status or null data";
+                        return Mono.error(new RuntimeException(errorMessage + " (Code: " + apiResponse.getCode() + ")"));
+                    }
+                })
+                .log("response-from-book-catalog-service-getBookDetail");
+
     }
 
 }
