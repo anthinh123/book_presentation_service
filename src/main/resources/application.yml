@@ -4,3 +4,7 @@ server:
 spring:
   application:
     name: book_presentation_service
+
+services:
+  book_catalog:
+    path: api/v1/books
