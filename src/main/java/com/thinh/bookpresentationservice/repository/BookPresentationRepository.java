@@ -18,8 +18,8 @@ public class BookPresentationRepository {
 
     private final WebClient webClient;
 
-    public BookPresentationRepository(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("http://localhost:8181").build();
+    public BookPresentationRepository(WebClient.Builder webClientBuilder,  @Value("${services.book_catalog.host}") String host) {
+        this.webClient = webClientBuilder.baseUrl(host).build();
     }
 
     public Mono<Paging<Book>> getBooks(int page, int size) {

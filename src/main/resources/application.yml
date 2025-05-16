@@ -23,4 +23,5 @@ spring:
 
 services:
   book_catalog:
+    host: http://localhost:8181
     path: api/v1/books
