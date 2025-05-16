@@ -17,6 +17,7 @@ public class BookPresentationController {
 
     private final BookPresentationService bookPresentationService;
 
+    // TODO Hardcoded userId because we will create suggestion for specific user
     String userId = "123";
 
     @GetMapping

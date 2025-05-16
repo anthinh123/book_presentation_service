@@ -15,7 +15,7 @@ public class BookViewedKafkaProducer {
     private static final String BOOK_VIEWED_TOPIC = "book_viewed_topic";
 
     @Autowired
-    private KafkaTemplate<Long, String> kafkaTemplate;
+    private KafkaTemplate<String, String> kafkaTemplate;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -34,7 +34,7 @@ public class BookViewedKafkaProducer {
                     .build();
             String message = objectMapper.writeValueAsString(event);
             System.out.printf("Sending message to topic %s: %s%n", BOOK_VIEWED_TOPIC, message);
-            kafkaTemplate.send(BOOK_VIEWED_TOPIC, bookId, message);
+            kafkaTemplate.send(BOOK_VIEWED_TOPIC, String.valueOf(bookId), message);
         } catch (Exception e) {
             System.err.println("Error sending BookViewed event: " + e.getMessage());
         }
