@@ -5,6 +5,22 @@ spring:
   application:
     name: book_presentation_service
 
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: book-group-id
+      auto-offset-reset: earliest # or latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: '*' # To trust all packages for deserialization (for JsonSerializer/JsonDeserializer)
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
 services:
   book_catalog:
     path: api/v1/books

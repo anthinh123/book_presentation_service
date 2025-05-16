@@ -17,6 +17,8 @@ public class BookPresentationController {
 
     private final BookPresentationService bookPresentationService;
 
+    String userId = "123";
+
     @GetMapping
     public Mono<ResponseEntity<ApiResponse<Paging<BookResponse>>>> getBookPresentation(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         return bookPresentationService.getBooks(page, size).map(ApiResponse::success);
@@ -24,7 +26,7 @@ public class BookPresentationController {
 
     @GetMapping("/{bookId}")
     public Mono<ResponseEntity<ApiResponse<BookResponse>>> getBookDetail(@PathVariable Long bookId) {
-        return bookPresentationService.getBookDetail(bookId).map(bookResponse -> ApiResponse.success(bookResponse));
+        return bookPresentationService.getBookDetail(bookId, userId).map(bookResponse -> ApiResponse.success(bookResponse));
     }
 
 }
